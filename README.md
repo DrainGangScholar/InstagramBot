@@ -11,7 +11,7 @@ This script logs into an Instagram account, navigates to the account's following
 1. Clone this repository or download the script files to your local machine.
 2. Install the required Python modules using pip: 
 ```
-   pip install selenium
+pip install selenium
 ```
 3. Download and install Chrome WebDriver from [https://chromedriver.chromium.org/downloads](https://chromedriver.chromium.org/downloads).
 
