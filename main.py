@@ -2,52 +2,46 @@ from selenium import webdriver
 from time import sleep
 
 
-
-class InstagramBot():
+class InstagramBot:
     def __init__(self):
         self.driver = webdriver.Chrome()
-        sleep(0.5)
 
     def login(self, username, password):
         self.driver.get("https://www.instagram.com/")
-        sleep(0.5)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[1]/div/label/input").send_keys(username)
-        sleep(0.5)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[2]/div/label/input").send_keys(password)
-        sleep(0.5)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/main/article/div[2]/div[1]/div/form/div/div[3]").click()
+        sleep(1)
+        username_input = self.driver.find_element_by_xpath('//input[@name="username"]')
+        username_input.send_keys(username)
+        password_input = self.driver.find_element_by_xpath('//input[@name="password"]')
+        password_input.send_keys(password)
+        login_button = self.driver.find_element_by_xpath('//button[@type="submit"]')
+        login_button.click()
         sleep(6)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/main/div/div/div/div/button").click()
-        sleep(8)
-        self.driver.find_element_by_xpath(
-            '//button[text()="Not Now"]').click()
+        not_now_button = self.driver.find_element_by_xpath('//button[text()="Not Now"]')
+        not_now_button.click()
         sleep(1)
 
     def search(self, target):
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/nav/div[2]/div/div/div[2]/div[1]/div/span[2]").click()
+        search_button = self.driver.find_element_by_xpath('//input[@placeholder="Search"]')
+        search_button.send_keys(target)
         sleep(1)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/nav/div[2]/div/div/div[2]/input").send_keys(target)
-        sleep(1)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/nav/div[2]/div/div/div[2]/div[3]/div/div[2]/div/div[1]/a/div").click()
+        search_result = self.driver.find_element_by_xpath('//div[@class="fuqBx"]//a[@href="/' + target + '/"]')
+        search_result.click()
         sleep(1)
 
-    def unfollowAll(self, username, password, numOfFollowers):
+    def unfollow_all(self, username, password, num_followers):
         self.login(username, password)
         self.search(username)
-        sleep(0.5)
-        self.driver.find_element_by_xpath(
-            "/html/body/div[1]/section/main/div/header/section/ul/li[3]/a").click()
+        sleep(1)
+        followers_button = self.driver.find_element_by_xpath('//a[@href="/' + username + '/following/"]')
+        followers_button.click()
         sleep(2)
-        for i in range(numOfFollowers):
-            self.driver.find_element_by_xpath('//button[text()="Following"]').click()
-            self.driver.find_element_by_xpath('//button[text()="Unfollow"]').click()
+        for i in range(num_followers):
+            following_button = self.driver.find_element_by_xpath('//button[text()="Following"]')
+            following_button.click()
+            unfollow_button = self.driver.find_element_by_xpath('//button[text()="Unfollow"]')
+            unfollow_button.click()
             sleep(2)
 
-
+if __name__ == "__main__":
+    bot = InstagramBot()
+    bot.unfollow_all("your_username", "your_password", 10)
